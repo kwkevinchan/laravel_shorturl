@@ -8,7 +8,7 @@ use App\Validators\User\LoginValidation;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
-
+use Illuminate\Support\Facades\Config;
 
 class UserController extends Controller
 {
@@ -59,7 +59,7 @@ class UserController extends Controller
                 'password' => $request->password
             ])) {
                 $user = Auth::user();
-                $token = $user->createToken('YourAppName')->accessToken;
+                $token = $user->createToken(Config::get('app.name'))->accessToken;
          
                 return response()->json(['token' => $token], 200);
             }
