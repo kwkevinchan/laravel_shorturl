@@ -10,5 +10,5 @@ build-dev: build-base
 dev: build-dev
 	docker compose up -d
 
-dev-login:
+dev-exec:
 	docker compose exec php-fpm bash
