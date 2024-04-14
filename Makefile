@@ -12,3 +12,6 @@ dev: build-dev
 
 dev-exec:
 	docker compose exec php-fpm bash
+
+dev-test:
+	docker compose exec php-fpm php artisan test
