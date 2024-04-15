@@ -7,6 +7,7 @@ use Illuminate\Support\Str;
 use App\Models\ShortUrl;
 use Illuminate\Support\Facades\Config;
 use App\Validators\ShortUrl\GenerateShortUrlValidation;
+use Illuminate\Support\Facades\Cache;
 
 class ShortUrlController extends Controller
 {
@@ -60,9 +61,16 @@ class ShortUrlController extends Controller
     public function redirectToOriginalUrl($shortCode)
     {
         try {
+            // check Cache
+            $shortUrl = Cache::get('key');
+            if ($shortUrl) {
+                return redirect()->away($shortUrl);
+            }
+
             $shortUrl = ShortUrl::where('short_code', $shortCode)->first();
 
             if ($shortUrl) {
+                Cache::put('key', $shortUrl->original_url, now()->addDay());
                 return redirect()->away($shortUrl->original_url);
             } else {
                 abort(404);
